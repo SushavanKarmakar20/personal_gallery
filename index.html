@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Asset Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="animate__animated animate__fadeInDown">
+        <div class="logo">Curated <span>Collection</span></div>
+        <nav class="filter-bar" id="filter-bar">
+            <button class="filter-btn active" data-filter="all">Everything</button>
+        </nav>
+    </header>
+
+    <main class="gallery" id="media-grid"></main>
+
+    <div id="lightbox" class="lightbox">
+        <span class="close-lightbox">&times;</span>
+        <div id="lightbox-content" class="lightbox-content"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
