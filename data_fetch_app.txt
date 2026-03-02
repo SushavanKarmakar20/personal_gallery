@@ -1,0 +1,56 @@
+//Go to: https://script.google.com/home
+
+function buildDriveCsv() {
+  // 1. Add as many Folder IDs as you need in this list
+  var folderIds = [
+    'folder_id_1',
+    'folder_id_2'
+  ]; 
+  
+  var csvData = [["category", "id", "type"]]; // CSV Headers
+
+  // 2. Loop through each folder ID in the list
+  folderIds.forEach(function(id) {
+    try {
+      var folder = DriveApp.getFolderById(id);
+      // Run the recursive search for this specific folder
+      getFilesRecursive(folder, csvData);
+    } catch (e) {
+      Logger.log("Error accessing folder ID " + id + ": " + e.message);
+    }
+  });
+
+  // 3. Generate the final CSV content
+  var csvContent = csvData.map(row => row.join(",")).join("\n");
+  
+  // This will overwrite or create a new file in your root Drive
+  DriveApp.createFile('data.csv', csvContent, MimeType.PLAIN_TEXT);
+  
+  Logger.log("Done! Processed " + folderIds.length + " folders. Check your Drive for 'data.csv'");
+}
+
+function getFilesRecursive(folder, csvData) {
+  var folderName = folder.getName();
+  var files = folder.getFiles();
+
+  while (files.hasNext()) {
+    var file = files.next();
+    var fileName = file.getName().toLowerCase();
+    var type = "";
+
+    if (fileName.endsWith(".mp4")) {
+      type = "mp4";
+    } else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+      type = "jpg";
+    }
+
+    if (type !== "") {
+      csvData.push([folderName, file.getId(), type]);
+    }
+  }
+
+  var subfolders = folder.getFolders();
+  while (subfolders.hasNext()) {
+    getFilesRecursive(subfolders.next(), csvData);
+  }
+}
